@@ -1,0 +1,111 @@
+.order-summary-box{
+    border: 2px solid red;
+    width: 30vw;
+    min-height: 30vh;
+    float: right;
+    margin: 2rem;
+}
+
+
+.itemsForPrices{
+    margin-left: 1rem;
+    border: 2px solid black;
+    max-height: 30vh;
+    width: 40%;
+
+}
+
+.itemsForPrices p {
+    margin-bottom: .3rem;
+}
+
+main{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+h2{
+    width: 100%;
+    text-align: start;
+    border: 2px solid pink;
+}
+
+.review-box{
+    display: flex;
+
+}
+.checkout-box {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr 1.5fr;
+    grid-template-rows: 1fr 2fr .5fr .5fr;
+    gap: 1rem;
+    border: 3px solid black;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    align-items: center;
+    width: 80%;
+  }
+  
+  .product-checkout-image {
+    width: 10rem;
+    height: 13rem;
+    margin: .3rem;
+    padding: .3rem;
+    object-fit: contain;
+    border: 3px solid red;
+    grid-column: 1 / 2;
+    grid-row: 2 / 5;
+  }
+  
+  .product-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+  }
+  
+ h3 {
+    margin: 0 0 0.5rem 0;
+    border: 2px solid darkblue;
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
+  }
+  
+  .product-details .price,
+  .product-details .quantity {
+    margin: 0.2rem 0;
+  }
+  .price{
+    border: 2px solid violet;
+    grid-column: 2 / 3;
+    grid-row: 3 / 4;
+
+  }
+  .quantity-buttons{
+    border: 2px solid orange;
+    display: flex;
+    padding: .2rem;
+    grid-column: 2 / 3;
+    grid-row: 4 / 5;
+    justify-content: space-between;
+
+  }
+
+  .delivery-options{
+    grid-column: 3 / 4;
+    grid-row: 2 / 5;
+  }
+  .option{
+    display: flex;
+    margin: .5rem;
+    padding: .4rem;
+  }
+  .delivery-date{
+    margin-left: .5rem;
+  }
+
+  .header-delivery-date{
+    grid-column: 1 / 4;
+    grid-row: 1 / 2;
+  }
