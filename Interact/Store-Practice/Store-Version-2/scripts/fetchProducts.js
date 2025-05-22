@@ -34,4 +34,3 @@ export const fetchProducts = async () => {
         console.error('Error message!', error);
     }
 }   
-fetchProducts()

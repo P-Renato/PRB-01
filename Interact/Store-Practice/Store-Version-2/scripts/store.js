@@ -2,9 +2,11 @@ import { fetchProducts } from './fetchProducts.js';
 import {updateCartQuantity, addToCart } from './cart.js';
 
 
-const container = document.querySelector('.products-container');
-
-export async function render() {
+export async function render(container) {
+  if (!container) {
+    console.warn('No container found!');
+    return;
+  }
   const products = await fetchProducts();
     console.log(products)
     console.log(typeof products)
@@ -95,4 +97,5 @@ export async function render() {
     }
 
 }
-render();
+
+

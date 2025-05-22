@@ -109,3 +109,7 @@ h2{
     grid-column: 1 / 4;
     grid-row: 1 / 2;
   }
+.delivery-date h5,
+.delivery-date p{
+  margin: .4rem;
+}  

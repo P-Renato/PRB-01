@@ -1,29 +1,32 @@
 import { fetchProducts } from "./fetchProducts.js";
-import {render} from './store.js';
 import './date.js';
 import {updateCartQuantity, addToCart } from './cart.js';
+// import './checkout.js'
+
 
 const params = new URLSearchParams(window.location.search);
 const productId = params.get('id');
-console.log(productId)
+console.log('Product ID:', productId)
 
-const allProducts = JSON.parse(localStorage.getItem('allProducts'));
+let allProducts = JSON.parse(localStorage.getItem('allProducts'));
+console.log('allProducts from localStorage:', allProducts);
+let productsArray = Object.values(allProducts);
+let product = productsArray.find(p => p.id == productId);
+
+
+
 console.log(allProducts);
 
-let product;
-
-if (!allProducts || !allProducts[productId]) {
-    console.error("Product not found.");
-  } else {
-    product = allProducts[productId];
-    console.log(product)
+if (!product) {
+  console.warn('Product not found in localStorage. Refetching...');
+  allProducts = await fetchProducts();
+  product = allProducts?.find(p => p.id == productId);
 }
-console.log(product)
 
 const container = document.getElementById('product-details');
 container.innerHTML = `
 <div class="product-details">
-<h1>${allProducts[productId].title}</h1>
+<h1>${product.title}</h1>
 <img src="${product.image}" alt="${product.title}" />
 <p class="descriptionText">${product.description}</p>
 <div class="priceText addedToBasket"> 
@@ -38,9 +41,9 @@ container.innerHTML = `
 </div>
 `;
 
-console.log(container)
+document.querySelector('.js-add-to-cart')?.addEventListener('click', () => {
+  addToCart(product.id);
+  updateCartQuantity();
+});
 
-await render(); 
-fetchProducts();
 updateCartQuantity();
-addToCart();

@@ -1,4 +1,4 @@
-
+import { setupQuantityChangeListener } from './cart.js';
 
 const cart = JSON.parse(localStorage.getItem('cart')) || [];
 const allProducts = JSON.parse(localStorage.getItem('allProducts')) || {};
@@ -44,6 +44,9 @@ cart.forEach(cartItem => {
           selectQuantity.appendChild(option);
     }
 
+    setupQuantityChangeListener(selectQuantity, cartItem, quantity);
+    
+
     const deleteButton = document.createElement('button');
     deleteButton.classList.add('delete-button');
     deleteButton.textContent = 'delete';
@@ -54,65 +57,45 @@ cart.forEach(cartItem => {
     const deliveryOptions = document.createElement('nav');
     deliveryOptions.classList.add('delivery-options');
 
-    // Create the form element
-const form = document.createElement('form');
+    const form = document.createElement('form');
 
-// Define shipping options
-const shippingOptions = [
-  { id: 'freeShip', name: 'freeShip', value: '1', date: 'Date', text: 'FREE Shipping' },
-  { id: '3dayShip', name: '3dayShip', value: '2', date: 'Date', text: '$4.99 Shipping' },
-  { id: '1dayShip', name: '1dayShip', value: '3', date: 'Date', text: '$9.99 Shipping' }
-];
+    const shippingOptions = [
+      { id: 'freeShip', name: 'delivery-option', value: '1', date: 'Date', text: 'FREE Shipping' },
+      { id: '3dayShip', name: 'delivery-option', value: '2', date: 'Date', text: '$4.99 Shipping' },
+      { id: '1dayShip', name: 'delivery-option', value: '3', date: 'Date', text: '$9.99 Shipping' }
+    ];
 
-// Loop through each option and create the label + input + nav
-shippingOptions.forEach(option => {
-  // Create label
-  const label = document.createElement('label');
-  label.className = 'option';
-  label.setAttribute('for', option.id);
+    shippingOptions.forEach(option => {
 
-  // Create input
-  const input = document.createElement('input');
-  input.type = 'radio';
-  input.name = option.name;
-  input.value = option.value;
-
-  // Create nav container
-  const nav = document.createElement('nav');
-  nav.className = 'delivery-date';
-
-  // Create h5 (date)
-  const h5 = document.createElement('h5');
-  h5.textContent = option.date;
-
-  // Create p (shipping cost)
-  const p = document.createElement('p');
-  p.textContent = option.text;
-
-  // Assemble nav
-  nav.appendChild(h5);
-  nav.appendChild(p);
-
-  // Assemble label
-  label.appendChild(input);
-  label.appendChild(nav);
-
-  // Add label to form
-  form.appendChild(label);
-});
-
-// Append form to the body (or any container)
-deliveryOptions.appendChild(form);
+      const label = document.createElement('label');
+      label.className = 'option';
+      label.setAttribute('for', option.id);
 
 
+      const input = document.createElement('input');
+      input.type = 'radio';
+      input.name = option.name;
+      input.value = option.value;
 
+      const nav = document.createElement('nav');
+      nav.className = 'delivery-date';
 
-    // const chooseYourOption = document.createElement('h4');
-    // const freeShippingInfo = document.createElement('div');
-    // const freeShippingDate = document.createElement('h5');
-    // const freeShippingPrice = document.createElement('p');
-    
+      const h5 = document.createElement('h5');
+      h5.className = 'dynamicShippingDate';
+      h5.textContent = option.date;
 
+      const p = document.createElement('p');
+      p.textContent = option.text;
+
+      nav.appendChild(h5);
+      nav.appendChild(p);
+      label.appendChild(input);
+      label.appendChild(nav);
+
+      form.appendChild(label);
+    });
+
+    deliveryOptions.appendChild(form);
 
 
     checkoutBox.appendChild(headerDeliveryDate);

@@ -1,17 +1,40 @@
-import {render} from './store.js';
-import { fetchProducts } from './fetchProducts.js';
+import { render } from './store.js';
 import './date.js'; 
-import './cart.js';
-import './checkout.js';
+import { updateCartQuantity } from './cart.js';
+import { fetchProducts } from "./fetchProducts.js";
+
+document.addEventListener('DOMContentLoaded', async () => {
+  const container = document.querySelector('.products-container');
+
+  if (!container) {
+    console.warn('No container found on main page!');
+    return;
+  }
+  await fetchProducts();
+  await render(container);
+
+  observeProductImages();
+
+  const slideImage = document.querySelector('.slideImg');
+  if (slideImage) {
+    observeSlideImage(slideImage);
+  } else {
+    console.warn('No element found with class .slideImg to observe.');
+  }
+  updateCartQuantity();
+});
 
 
 
-await render(); 
-fetchProducts();
 
-const observeProductImages = () => {
+function observeProductImages () {
     const images = document.querySelectorAll('.product-image');
   
+    if (images.length === 0)  {
+      console.warn('No images found with class .product-image to observe.');
+      return;
+    }
+
     const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -28,25 +51,21 @@ const observeProductImages = () => {
   };
   
 
-  observeProductImages();
-
-
-
-const image = document.querySelector('.slideImg');
-console.log(image)
-
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      image.classList.add('slide-animation');
-    } else {
-      image.classList.remove('slide-animation'); // reset so it can animate again
-    }
+  
+function observeSlideImage(image) {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        image.classList.add('slide-animation');
+      } else {
+        image.classList.remove('slide-animation');
+      }
+    });
+  }, {
+    threshold: 0,
+    rootMargin: "0px 0px -50% 0px"
   });
-}, {
-  threshold: 0, // 50% of the image should be visible to trigger
-  rootMargin: "0px 0px -50% 0px"
-});
 
-console.log(image)
-observer.observe(image);
+  observer.observe(image);
+}
+
