@@ -1,4 +1,4 @@
-import { setupQuantityChangeListener } from './cart.js';
+import { setupQuantityChangeListener, setupDeleteItem } from './cart.js';
 
 const cart = JSON.parse(localStorage.getItem('cart')) || [];
 const allProducts = JSON.parse(localStorage.getItem('allProducts')) || {};
@@ -11,6 +11,8 @@ cart.forEach(cartItem => {
     if(!product) return;
 
     const checkoutBox = document.createElement('nav');
+    checkoutBox.classList.add(`checkout-box-id${cartItem.productId}`);
+  //  checkoutBox.dataset.productId = cartItem.productId; 
     checkoutBox.classList.add('checkout-box');
 
     const headerDeliveryDate = document.createElement('h2');
@@ -45,19 +47,26 @@ cart.forEach(cartItem => {
     }
 
     setupQuantityChangeListener(selectQuantity, cartItem, quantity);
-    
+    setupDeleteItem();
 
     const deleteButton = document.createElement('button');
     deleteButton.classList.add('delete-button');
-    deleteButton.textContent = 'delete';
+    deleteButton.dataset.productId = cartItem.productId;
+    deleteButton.textContent = 'Delete';
     quantityButtons.appendChild(quantity);
     quantityButtons.appendChild(selectQuantity);
     quantityButtons.appendChild(deleteButton);
 
+    
+
     const deliveryOptions = document.createElement('nav');
     deliveryOptions.classList.add('delivery-options');
 
+    const chooseDeliveryHeader = document.createElement('h3')
+    chooseDeliveryHeader.textContent = 'Choose a delivery option:';
+
     const form = document.createElement('form');
+    form.appendChild(chooseDeliveryHeader);
 
     const shippingOptions = [
       { id: 'freeShip', name: 'delivery-option', value: '1', date: 'Date', text: 'FREE Shipping' },
@@ -87,11 +96,14 @@ cart.forEach(cartItem => {
       const p = document.createElement('p');
       p.textContent = option.text;
 
+
+      
       nav.appendChild(h5);
       nav.appendChild(p);
       label.appendChild(input);
       label.appendChild(nav);
 
+      
       form.appendChild(label);
     });
 

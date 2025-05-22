@@ -12,6 +12,7 @@ export function updateCartQuantity() {
       cartCount.textContent = cartQuantity;
     }
     console.log(storedCart)
+    console.log(typeof storedCart)
   }
   
 document.addEventListener('DOMContentLoaded', ()=>{
@@ -41,7 +42,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
             checkmark.classList.add('removeCheckmark')
             }, 3000);
 
-            console.log(cart)
+
         });
     });
 })
@@ -84,11 +85,10 @@ export  function addToCart(productId) {
         item.productId === cartItem.productId &&
         item.deliveryOptionId === cartItem.deliveryOptionId
       );
-  
+
       if (itemToUpdate) {
         itemToUpdate.quantity = newQuantity;
       
-  
       localStorage.setItem('cart', JSON.stringify(cart));
       updateCartQuantity();
       quantityTextElement.textContent = `Quantity: ${newQuantity}`;
@@ -96,3 +96,44 @@ export  function addToCart(productId) {
     });
   }
   
+  export function setupDeleteItem() {
+    const deleteBtn = document.querySelectorAll('.delete-button');
+
+    if (deleteBtn.length === 0) {
+      console.log('No delete buttons found');
+      return;
+    }
+    
+    deleteBtn.forEach((button) =>{
+      button.addEventListener('click', ()=>{
+        console.log('Delete button clicked', button);
+        console.log(button)
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const productId = Number(button.dataset.productId);
+  
+        console.log('Current cart:', cart);
+        console.log('Product ID to delete:', productId);
+
+        cart = removeFromCart(cart, productId);
+        const removeFromDOM = document.querySelector(`.checkout-box${productId}`)
+        console.log('Remove from DOM is: ', removeFromDOM);
+        
+        removeFromDOM.remove();
+        // console.log('Type of productId:', typeof productId);
+        // console.log('Cart item productIds:', cart.map(item => `${item.productId} (${typeof item.productId})`));
+
+
+        localStorage.setItem('cart', JSON.stringify(cart));
+        updateCartQuantity();
+        console.log('Updated cart saved to localStorage:', cart);
+
+      })
+    })
+    console.log('Delete button:', deleteBtn);
+
+  }
+
+  function removeFromCart(cart, productId) {
+    return cart.filter(item => item.productId !== productId);
+    
+  }
