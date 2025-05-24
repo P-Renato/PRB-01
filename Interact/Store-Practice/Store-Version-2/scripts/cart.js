@@ -1,51 +1,29 @@
+import { renderCheckoutPage } from './checkout.js';
+import { setupAddToCartButtons } from './checkmark.js';
 
-export function updateCartQuantity() {
-    const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
-    let cartQuantity = 0;
-    storedCart.forEach(cartItem => {
-      cartQuantity += cartItem.quantity;
-      console.log(cartQuantity)
-    });
-  
-    const cartCount = document.querySelector('.cart-count');
-    if (cartCount) {
-      cartCount.textContent = cartQuantity;
-    }
-    console.log(storedCart)
-    console.log(typeof storedCart)
-  }
-  
 document.addEventListener('DOMContentLoaded', ()=>{
   updateCartQuantity(); 
-    const addToCartBtn = document.querySelectorAll('.js-add-to-cart');
-
-    if (addToCartBtn.length === 0) {
-      return;
-    }
-
-    addToCartBtn.forEach(button => {
-        button.addEventListener('click', () => {
-            const productId = button.dataset.productId;
-            console.log(productId)
-
-            if (!productId) {
-              console.warn('Add to Cart button missing data-product-id!');
-              return;
-            }
-
-            addToCart(productId);
-            updateCartQuantity();
-            const checkmark = document.querySelector('.addedCheckmark'); 
-
-            checkmark.classList.remove('removeCheckmark')
-            setTimeout(()=>{
-            checkmark.classList.add('removeCheckmark')
-            }, 3000);
-
-
-        });
-    });
+  setupAddToCartButtons();
+  renderCheckoutPage();
 })
+
+export function updateCartQuantity() {
+  const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
+  let cartQuantity = 0;
+  storedCart.forEach(cartItem => {
+    cartQuantity += cartItem.quantity;
+    console.log('Cart quantity is', cartQuantity)
+  });
+
+  const cartCount = document.querySelector('.cart-count');
+  if (cartCount) {
+    cartCount.textContent = cartQuantity;
+  }
+  console.log(storedCart)
+  console.log(typeof storedCart)
+
+
+}
 
 export  function addToCart(productId) {
     if (!productId) {
@@ -53,8 +31,12 @@ export  function addToCart(productId) {
         return; 
       }
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    let matchingItem = cart.find(item => item.productId === productId);
+ 
 
+    
+    console.log('[DEBUG] addToCart called with:', productId); 
+
+    
     let selectedDeliveryOptionId = null;
 
     const deliveryInput = document.querySelector('input[name="delivery-option"]:checked');
@@ -62,7 +44,12 @@ export  function addToCart(productId) {
       selectedDeliveryOptionId = deliveryInput.value;
     }
     
+    const matchingItem = cart.find(item =>
+      item.productId === productId &&
+      item.deliveryOptionId === (selectedDeliveryOptionId || 1)
+    );
   
+
     if (matchingItem) {
       matchingItem.quantity += 1;
     } else {
@@ -107,33 +94,43 @@ export  function addToCart(productId) {
     deleteBtn.forEach((button) =>{
       button.addEventListener('click', ()=>{
         console.log('Delete button clicked', button);
-        console.log(button)
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
-        const productId = Number(button.dataset.productId);
+        const productId = button.dataset.productId;
+        const productIdNumber = Number(button.dataset.productId);
+        const deliveryOptionId = Number(button.dataset.deliveryOptionId);
   
-        console.log('Current cart:', cart);
-        console.log('Product ID to delete:', productId);
+        console.log('Current cart after deleting:', cart);
 
-        cart = removeFromCart(cart, productId);
-        const removeFromDOM = document.querySelector(`.checkout-box${productId}`)
-        console.log('Remove from DOM is: ', removeFromDOM);
+        cart = removeFromCart(cart, productIdNumber, deliveryOptionId);
         
-        removeFromDOM.remove();
-        // console.log('Type of productId:', typeof productId);
-        // console.log('Cart item productIds:', cart.map(item => `${item.productId} (${typeof item.productId})`));
-
-
+        
         localStorage.setItem('cart', JSON.stringify(cart));
-        updateCartQuantity();
+        console.log('Updated cart from localStorage:', JSON.parse(localStorage.getItem('cart')));
         console.log('Updated cart saved to localStorage:', cart);
 
+        const removeFromDOM = document.querySelector(`.checkout-box-id${productIdNumber}`)
+        console.log('Remove from DOM is: ', removeFromDOM);
+
+        if (removeFromDOM) {
+          removeFromDOM.remove();
+        } else {
+          console.warn('No DOM element found to remove for product ID:', productId);
+        }
+        
+        updateCartQuantity();
+        setupDeleteItem(); 
       })
     })
-    console.log('Delete button:', deleteBtn);
-
   }
 
-  function removeFromCart(cart, productId) {
-    return cart.filter(item => item.productId !== productId);
-    
-  }
+
+  function removeFromCart(cart, productId, deliveryOptionId) {
+  if (!Array.isArray(cart)) return [];
+
+ return cart.filter(item => {
+    return !(
+      Number(item.productId) === productId &&
+      Number(item.deliveryOptionId) === deliveryOptionId
+    );
+  });
+}

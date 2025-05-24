@@ -1,8 +1,12 @@
 import { fetchProducts } from "./fetchProducts.js";
 import './date.js';
-import {updateCartQuantity, addToCart } from './cart.js';
-// import './checkout.js'
+import {updateCartQuantity, addToCart, setupDeleteItem } from './cart.js';
 
+document.addEventListener('DOMContentLoaded', ()=>{
+  updateCartQuantity(); 
+  setupDeleteItem()
+
+})
 
 const params = new URLSearchParams(window.location.search);
 const productId = params.get('id');
@@ -42,6 +46,7 @@ container.innerHTML = `
 `;
 
 document.querySelector('.js-add-to-cart')?.addEventListener('click', () => {
+  console.log('[DEBUG] Add button clicked for:', productId);
   addToCart(product.id);
   updateCartQuantity();
 });
