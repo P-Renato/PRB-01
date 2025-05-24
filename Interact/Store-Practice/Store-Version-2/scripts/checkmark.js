@@ -18,7 +18,7 @@ export function setupAddToCartButtons() {
           return;
         }
   
-        addToCart(productId);
+
         updateCartQuantity();
   
         const checkmark = document.querySelector('.addedCheckmark'); 

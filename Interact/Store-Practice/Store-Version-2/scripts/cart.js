@@ -2,7 +2,7 @@ import { renderCheckoutPage } from './checkout.js';
 import { setupAddToCartButtons } from './checkmark.js';
 
 document.addEventListener('DOMContentLoaded', ()=>{
-  updateCartQuantity(); 
+  // updateCartQuantity(); 
   setupAddToCartButtons();
   renderCheckoutPage();
 })
@@ -19,10 +19,6 @@ export function updateCartQuantity() {
   if (cartCount) {
     cartCount.textContent = cartQuantity;
   }
-  console.log(storedCart)
-  console.log(typeof storedCart)
-
-
 }
 
 export  function addToCart(productId) {
@@ -31,11 +27,6 @@ export  function addToCart(productId) {
         return; 
       }
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
- 
-
-    
-    console.log('[DEBUG] addToCart called with:', productId); 
-
     
     let selectedDeliveryOptionId = null;
 
@@ -77,7 +68,7 @@ export  function addToCart(productId) {
         itemToUpdate.quantity = newQuantity;
       
       localStorage.setItem('cart', JSON.stringify(cart));
-      updateCartQuantity();
+
       quantityTextElement.textContent = `Quantity: ${newQuantity}`;
       }
     });
@@ -85,21 +76,16 @@ export  function addToCart(productId) {
   
   export function setupDeleteItem() {
     const deleteBtn = document.querySelectorAll('.delete-button');
-
-    if (deleteBtn.length === 0) {
-      console.log('No delete buttons found');
-      return;
-    }
     
     deleteBtn.forEach((button) =>{
       button.addEventListener('click', ()=>{
-        console.log('Delete button clicked', button);
-        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
         const productId = button.dataset.productId;
         const productIdNumber = Number(button.dataset.productId);
         const deliveryOptionId = Number(button.dataset.deliveryOptionId);
   
-        console.log('Current cart after deleting:', cart);
+
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
         cart = removeFromCart(cart, productIdNumber, deliveryOptionId);
         
@@ -108,7 +94,14 @@ export  function addToCart(productId) {
         console.log('Updated cart from localStorage:', JSON.parse(localStorage.getItem('cart')));
         console.log('Updated cart saved to localStorage:', cart);
 
-        const removeFromDOM = document.querySelector(`.checkout-box-id${productIdNumber}`)
+
+        // const elementToRemove = document.querySelector(
+        //  `[data-product-id="${productId}"][data-delivery-option-id="${deliveryOptionId}"]`
+        // );
+        // if (elementToRemove) {
+        //   elementToRemove.remove();
+        // }
+          const removeFromDOM = document.querySelector(`.checkout-box-id${productIdNumber}`)
         console.log('Remove from DOM is: ', removeFromDOM);
 
         if (removeFromDOM) {

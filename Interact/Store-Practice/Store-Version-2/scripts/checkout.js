@@ -121,17 +121,13 @@ export function renderCheckoutPage() {
       });
 
       deliveryOptions.appendChild(form);
-
-
       checkoutBox.appendChild(headerDeliveryDate);
       checkoutBox.appendChild(title);
       checkoutBox.appendChild(img);
       checkoutBox.appendChild(price);
       checkoutBox.appendChild(quantityButtons);
       checkoutBox.appendChild(deliveryOptions);
-      checkoutContainer.appendChild(checkoutBox)
-
-      
+      checkoutContainer.appendChild(checkoutBox)   
 
   });
   setupDeleteItem();
