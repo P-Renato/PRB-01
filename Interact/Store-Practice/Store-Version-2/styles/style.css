@@ -396,26 +396,13 @@ main {
     padding: 0.3rem;
 
 } 
-.addedCheckmark{
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    
-}
-.removeCheckmark{
-    display: none;
-}
-.addedText{
-    color: #067d62;
-}
+
 .cart-count {
     position: absolute;
     top: -1px;    /* Adjust position */
     right: 3px;
     /* background-color: rgba(255, 0, 0, 0.363); */
     color: rgb(229, 233, 17);
-    /* border-radius: 50%; Makes it a circle */
-    /* border: 2px solid rgba(255, 54, 54, 0.562); */
     width: 1.5em;
     height: 1.5em;
     display: flex;
@@ -432,3 +419,34 @@ main {
     color: white;
 }
 
+.addedToBasket img {
+    /* border: none; */
+    width: 2rem;
+    height: 2rem;
+    padding: 0.3rem;
+} 
+.addedCheckmark{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid firebrick;
+    /* margin-left: 0.5rem; */
+    /* height: 100%; */
+}
+.removeCheckmark{
+    display: none;
+}
+
+
+.addedText{
+    color: #067d62;
+}
+
+
+
+
+.checkmark{
+    width: 2rem;
+    height: 3rem;
+    background-color: #003366;
+}

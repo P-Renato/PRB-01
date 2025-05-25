@@ -1,5 +1,6 @@
 import { fetchProducts } from './fetchProducts.js';
 import {updateCartQuantity, addToCart } from './cart.js';
+import { flashCheckmark } from './checkmark.js';
 
 
 export async function render(container) {
@@ -79,11 +80,37 @@ export async function render(container) {
             btn.classList.add('add-to-basket-btn');
             btn.textContent = 'Add to basket';
             productBox.appendChild(btn);
+
+            const addedCheckmark = document.createElement('div');
+          
+            addedCheckmark.classList.add('addedCheckmark', 'removeCheckmark');
+
+            const checkmarkImg = document.createElement('img');
+            checkmarkImg.classList.add('checkmark');
+            checkmarkImg.src = 'Icons/checkmark.png';
+            checkmarkImg.alt = 'checkmark';
+
+            const addedText = document.createElement('p');
+            addedText.classList.add('addedText');
+            addedText.textContent = 'Added to basket';
+
+            // Append the image and text to the checkmark container
+            addedCheckmark.appendChild(checkmarkImg);
+            addedCheckmark.appendChild(addedText);
+
+            // Then append addedCheckmark to your container (e.g., productBox)
+            productBox.appendChild(addedCheckmark);
+
             
             btn.addEventListener('click', ()=>{
               addToCart(product.id);
               updateCartQuantity();
-            })
+
+              const productContainer = btn.closest('.product-box');
+              flashCheckmark(productContainer);
+            });
+
+
 
             img.addEventListener('click', () => {
                 const productNewWindow = window.location.href = `product.html?id=${product.id}`;

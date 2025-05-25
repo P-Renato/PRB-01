@@ -1,8 +1,8 @@
 import { renderCheckoutPage } from './checkout.js';
 import { setupAddToCartButtons } from './checkmark.js';
+import './deliveryOptions.js'
 
 document.addEventListener('DOMContentLoaded', ()=>{
-  // updateCartQuantity(); 
   setupAddToCartButtons();
   renderCheckoutPage();
 })
@@ -84,24 +84,13 @@ export  function addToCart(productId) {
         const productIdNumber = Number(button.dataset.productId);
         const deliveryOptionId = Number(button.dataset.deliveryOptionId);
   
-
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
         cart = removeFromCart(cart, productIdNumber, deliveryOptionId);
-        
-        
+         
         localStorage.setItem('cart', JSON.stringify(cart));
-        console.log('Updated cart from localStorage:', JSON.parse(localStorage.getItem('cart')));
-        console.log('Updated cart saved to localStorage:', cart);
 
-
-        // const elementToRemove = document.querySelector(
-        //  `[data-product-id="${productId}"][data-delivery-option-id="${deliveryOptionId}"]`
-        // );
-        // if (elementToRemove) {
-        //   elementToRemove.remove();
-        // }
-          const removeFromDOM = document.querySelector(`.checkout-box-id${productIdNumber}`)
+        const removeFromDOM = document.querySelector(`.checkout-box-id${productIdNumber}`)
         console.log('Remove from DOM is: ', removeFromDOM);
 
         if (removeFromDOM) {

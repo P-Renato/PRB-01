@@ -1,4 +1,4 @@
-import {updateCartQuantity, addToCart } from './cart.js';
+import {updateCartQuantity } from './cart.js';
 
 
 export function setupAddToCartButtons() {
@@ -20,15 +20,21 @@ export function setupAddToCartButtons() {
   
 
         updateCartQuantity();
+
+        flashCheckmark();
   
-        const checkmark = document.querySelector('.addedCheckmark'); 
-        if (checkmark) {
-          checkmark.classList.remove('removeCheckmark');
-          setTimeout(() => {
-            checkmark.classList.add('removeCheckmark');
-          }, 3000);
-        }
+        
       });
     });
   }
   
+  export function flashCheckmark(container) {
+    if (!container) return;
+    const checkmark = document.querySelector('.addedCheckmark'); 
+      if (checkmark) {
+        checkmark.classList.remove('removeCheckmark');
+        setTimeout(() => {
+          checkmark.classList.add('removeCheckmark');
+        }, 3000);
+      }
+  }

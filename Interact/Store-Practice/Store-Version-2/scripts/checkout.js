@@ -1,10 +1,13 @@
 import { setupQuantityChangeListener, setupDeleteItem } from './cart.js';
+import './date.js';
+import { calculateDeliveryDate, deliveryOptions} from './deliveryOptions.js';
 
 
-export function renderCheckoutPage() {
+export function renderCheckoutPage(cartItem) {
   const cart = JSON.parse(localStorage.getItem('cart')) || [];
   const allProducts = JSON.parse(localStorage.getItem('allProducts')) || {};
   const checkoutContainer = document.querySelector('.checkout-products');
+
 
   // Clear old DOM
   checkoutContainer.innerHTML = '';
@@ -19,15 +22,22 @@ export function renderCheckoutPage() {
       const product = allProducts[cartItem.productId];
       if(!product) return;
 
+
+     
+      const dateString = calculateDeliveryDate(cartItem.deliveryOptionId || '1');
+
       const checkoutBox = document.createElement('nav');
       checkoutBox.classList.add(`checkout-box-id${cartItem.productId}`);
       checkoutBox.dataset.productId = cartItem.productId; 
       checkoutBox.dataset.deliveryOptionId = cartItem.deliveryOptionId;
       checkoutBox.classList.add('checkout-box');
 
+
+      
+
       const headerDeliveryDate = document.createElement('h2');
       headerDeliveryDate.className = 'header-delivery-date'
-      headerDeliveryDate.textContent = `Delivery Date: DATE`
+      headerDeliveryDate.textContent = `Delivery Date: ${dateString}`
       const title = document.createElement('h3');
       title.textContent = product.title;
       
@@ -71,6 +81,8 @@ export function renderCheckoutPage() {
 
       
 
+       const selectedOptionId = cartItem.deliveryOptionId || '1';
+
       const deliveryOptions = document.createElement('nav');
       deliveryOptions.classList.add('delivery-options');
 
@@ -88,17 +100,34 @@ export function renderCheckoutPage() {
       ];
 
       shippingOptions.forEach(option => {
+        const optionId = `delivery-option-${option.id}-${cartItem.productId}`;
 
+        console.log(optionId)
         const label = document.createElement('label');
         label.className = 'option';
-        label.setAttribute('for', option.id);
+        label.htmlFor = optionId;
 
 
-        const input = document.createElement('input');
-        input.type = 'radio';
-        input.name = option.name;
-        input.value = option.value;
+        const inputRadio = document.createElement('input');
+        inputRadio.type = 'radio';
+        inputRadio.name = `delivery-${cartItem.productId}`;
+        inputRadio.value = option.value;
+        inputRadio.id = option.id;
+        inputRadio.checked = (option.id === selectedOptionId); 
 
+        inputRadio.addEventListener('change', () => {
+
+
+         console.log('[DEBUG] Selected option ID:', option.id); 
+
+        console.log('Selected delivery option:', option.id);
+        console.log('Radio changed!', event.target.value); 
+        const newDate = calculateDeliveryDate(option.value);
+        headerDeliveryDate.textContent = `Delivery Date: ${newDate}`;
+        
+        cartItem.deliveryOptionId = option.id;
+        localStorage.setItem('cart', JSON.stringify(cart));
+        })
         const nav = document.createElement('nav');
         nav.className = 'delivery-date';
 
@@ -113,7 +142,7 @@ export function renderCheckoutPage() {
         
         nav.appendChild(h5);
         nav.appendChild(p);
-        label.appendChild(input);
+        label.appendChild(inputRadio);
         label.appendChild(nav);
 
         
