@@ -1,5 +1,4 @@
 import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
-import {renderCheckoutPage} from './checkout.js';
 
 export const deliveryOptions = [
     { id: '1', deliveryDays: 7, priceCents: 0 },
@@ -22,12 +21,12 @@ export function calculateDeliveryDate(deliveryOptionId) {
 
 const today = dayjs();
 calculateDeliveryDate()
-renderCheckoutPage();
+
 
 const deliveryDate = today.add(deliveryOptions[0].deliveryDays,'days');
 const dateString = deliveryDate.format('dddd, MMMM D');
 const headerDeliveryDate = document.querySelector('.header-delivery-date');
-headerDeliveryDate.textContent = `Delivery Date: ${dateString}`;
+// headerDeliveryDate.textContent = `Delivery Date: ${dateString}`;
 
 console.group(deliveryDate)
 console.log(dateString)

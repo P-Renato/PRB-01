@@ -111,23 +111,44 @@ export function renderCheckoutPage(cartItem) {
         const inputRadio = document.createElement('input');
         inputRadio.type = 'radio';
         inputRadio.name = `delivery-${cartItem.productId}`;
-        inputRadio.value = option.value;
-        inputRadio.id = option.id;
-        inputRadio.checked = (option.id === selectedOptionId); 
-
-        inputRadio.addEventListener('change', () => {
-
-
-         console.log('[DEBUG] Selected option ID:', option.id); 
-
-        console.log('Selected delivery option:', option.id);
-        console.log('Radio changed!', event.target.value); 
-        const newDate = calculateDeliveryDate(option.value);
-        headerDeliveryDate.textContent = `Delivery Date: ${newDate}`;
+        inputRadio.value = option.id; // Use the string ID ('freeShip', '3dayShip', etc.)
+        inputRadio.id = optionId;
+        // inputRadio.id = option.value;
         
-        cartItem.deliveryOptionId = option.id;
-        localStorage.setItem('cart', JSON.stringify(cart));
+
+        inputRadio.checked = (String(option.id) === String(selectedOptionId));
+
+        // inputRadio.checked = (option.id === selectedOptionId); 
+
+        inputRadio.addEventListener('change', (event) => {
+
+        console.log('Selected:', {
+          optionId: option.id,
+          value: event.target.value,
+          cartItemId: cartItem.productId
+        });
+        
+
+          console.log('[DEBUG] Selected option ID:', option.id); 
+          console.log('Selected delivery option:', option.id);
+          console.log('Radio changed!', event.target.value); 
+          const newDate = calculateDeliveryDate(option.value);
+
+          headerDeliveryDate.textContent = `Delivery Date: ${newDate}`;
+          
+          cartItem.deliveryOptionId = option.id;
+          const cart = JSON.parse(localStorage.getItem('cart')) || [];
+          const itemIndex = cart.findIndex(item => 
+            item.productId === cartItem.productId &&
+            item.deliveryOptionId === cartItem.deliveryOptionId
+          );
+          if (itemIndex > -1) {
+            cart[itemIndex].deliveryOptionId = option.id;
+            localStorage.setItem('cart', JSON.stringify(cart));
+          }
         })
+
+
         const nav = document.createElement('nav');
         nav.className = 'delivery-date';
 
