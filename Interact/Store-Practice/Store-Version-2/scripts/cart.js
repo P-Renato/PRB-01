@@ -33,16 +33,15 @@ export  function addToCart(productId) {
         return; 
       }
     const cart = JSON.parse(localStorage.getItem('cart')) || []; 
-    let selectedDeliveryOptionId = [];
-
-    const deliveryInput = document.querySelector('input[name="delivery-option"]:checked');
+    const deliveryInput = document.querySelector(`input[name="delivery-option-${productId}"]:checked`);
+    let selectedDeliveryOptionId = '1';
     if (deliveryInput) {
       selectedDeliveryOptionId = deliveryInput.value;
     }
     
     const matchingItem = cart.find(item =>
-      item.productId === productId &&
-      item.deliveryOptionId === (selectedDeliveryOptionId || 1)
+      String(item.productId) === String(productId) &&
+      String(item.deliveryOptionId) === String(selectedDeliveryOptionId)
     );
   
 
@@ -67,18 +66,18 @@ export  function addToCart(productId) {
     selectElement.addEventListener('change', () => {
       const newQuantity = Number(selectElement.value);
       const cart = JSON.parse(localStorage.getItem('cart')) || [];
-  
+
       const itemToUpdate = cart.find(item =>
-        item.productId === cartItem.productId &&
-        item.deliveryOptionId === cartItem.deliveryOptionId
+        String(item.productId) === String(cartItem.productId) &&
+        String(item.deliveryOptionId) === String(cartItem.deliveryOptionId)
       );
 
       if (itemToUpdate) {
         itemToUpdate.quantity = newQuantity;
-      
-      localStorage.setItem('cart', JSON.stringify(cart));
-
-      quantityTextElement.textContent = `Quantity: ${newQuantity}`;
+        localStorage.setItem('cart', JSON.stringify(cart));
+        quantityTextElement.textContent = `Quantity: ${newQuantity}`;
+        updateCartQuantity();
+        renderCheckoutPage();
       }
     });
   }
@@ -92,11 +91,9 @@ export  function addToCart(productId) {
         event.stopPropagation();
 
         const productId = button.dataset.productId;
-        const productIdNumber = Number(button.dataset.productId);
-        const deliveryOptionId = Number(button.dataset.deliveryOptionId);
+        const deliveryOptionId = button.dataset.deliveryOptionId; // <-- treat as string
 
-         console.log('Pre-deletion cart:', JSON.parse(localStorage.getItem('cart')));
-  
+        console.log('Pre-deletion cart:', JSON.parse(localStorage.getItem('cart')));
 
         console.log('Attempting to delete:', {
           productId,
@@ -105,21 +102,18 @@ export  function addToCart(productId) {
         });
 
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
-        const initialLength = cart.length;
 
         cart = cart.filter(item => 
-        String(item.productId) !== String(productId)
+          !(String(item.productId) === String(productId) &&
+            String(item.deliveryOptionId) === String(deliveryOptionId))
         );
         
         localStorage.setItem('cart', JSON.stringify(cart));
         console.log(cart)
-        
-        
-        // cart = removeFromCart(cart, productIdNumber, deliveryOptionId);
-         
-        // localStorage.setItem('cart', JSON.stringify(cart));
 
-        const removeFromDOM = document.querySelector(`.checkout-box-id${productIdNumber}[data-delivery-option-id="${deliveryOptionId}"]`)
+        const removeFromDOM = document.querySelector(
+          `.checkout-box-id${productId}[data-delivery-option-id="${deliveryOptionId}"]`
+        )
         console.log('Remove from DOM is: ', removeFromDOM);
 
         if (removeFromDOM) {
@@ -133,7 +127,6 @@ export  function addToCart(productId) {
         }
         
         updateCartQuantity();
-        // setupDeleteItem(); 
       })
     })
   }

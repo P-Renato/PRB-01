@@ -265,11 +265,6 @@ main {
     overflow: hidden;
     transition: transform 0.2s ease;
 
-    img {
-
-        /* animation-range-start: 500px;
-        animation-range-end: 900px; */
-    }
     p {
         flex-grow: 1;
         overflow: hidden;
@@ -299,7 +294,7 @@ main {
 }
 
 .product-box img {
-    display: block;
+    /* display: block; */
     max-width: 100px;
     margin-bottom: 0.5em;
     border-radius: 6px;
@@ -390,18 +385,13 @@ main {
     align-items: center;
 }
 
-.addedToBasket img {
-    border: none;
-    width: 2rem;
-    padding: 0.3rem;
 
-} 
 
 .cart-count {
     position: absolute;
     top: -1px;    /* Adjust position */
     right: 3px;
-    /* background-color: rgba(255, 0, 0, 0.363); */
+    background-color: rgba(255, 0, 0, 0.363);
     color: rgb(229, 233, 17);
     width: 1.5em;
     height: 1.5em;
@@ -419,16 +409,15 @@ main {
     color: white;
 }
 
-.addedToBasket img {
-    /* border: none; */
-    width: 2rem;
-    height: 2rem;
-    padding: 0.3rem;
-} 
+
 .addedCheckmark{
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-left: 0.5;
+    height: 100%;
+    width: 100%;
+    padding: 2rem;
     border: 2px solid firebrick;
     /* margin-left: 0.5rem; */
     /* height: 100%; */
@@ -445,8 +434,10 @@ main {
 
 
 
-.checkmark{
+.checkmark img{
     width: 2rem;
     height: 3rem;
     background-color: #003366;
+      background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(2px);
 }

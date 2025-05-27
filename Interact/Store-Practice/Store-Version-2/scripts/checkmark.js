@@ -10,7 +10,8 @@ export function setupAddToCartButtons() {
     }
   
     addToCartBtn.forEach(button => {
-      button.addEventListener('click', () => {
+      button.addEventListener('click', (e) => {
+        e.preventDefault();
         const productId = button.dataset.productId;
   
         if (!productId) {

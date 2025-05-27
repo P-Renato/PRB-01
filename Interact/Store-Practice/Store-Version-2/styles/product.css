@@ -186,9 +186,14 @@ svg {
     justify-content: flex-start;
     margin-left: 0.5rem;
     height: 100%;
+    transition: opacity 0.3s ease;
+    /* opacity: 0; */
 }
 .removeCheckmark{
     display: none;
+}
+.addedCheckmark:not(.removeCheckmark) {
+  opacity: 1;
 }
 
 
