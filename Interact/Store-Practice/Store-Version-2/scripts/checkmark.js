@@ -29,13 +29,17 @@ export function setupAddToCartButtons() {
     });
   }
   
-  export function flashCheckmark(container) {
-    if (!container) return;
-    const checkmark = document.querySelector('.addedCheckmark'); 
-      if (checkmark) {
-        checkmark.classList.remove('removeCheckmark');
-        setTimeout(() => {
-          checkmark.classList.add('removeCheckmark');
-        }, 3000);
-      }
+  export function flashCheckmark(productBox) {
+    let checkmark;
+    if (productBox) {
+      checkmark = productBox.querySelector('.addedCheckmark');
+    } else {
+      checkmark = document.querySelector('.addedCheckmark');
+    }
+    if (!checkmark) return;
+    checkmark.classList.remove('removeCheckmark');
+    setTimeout(() => {
+      checkmark.classList.add('removeCheckmark');
+  }, 3000);
   }
+  

@@ -7,7 +7,7 @@ export function renderCheckoutPage(cartItem) {
   const cart = JSON.parse(localStorage.getItem('cart')) || [];
   const allProducts = JSON.parse(localStorage.getItem('allProducts')) || {};
   const checkoutContainer = document.querySelector('.checkout-products');
-
+  if (!checkoutContainer) return; 
 
   // Clear old DOM
   checkoutContainer.innerHTML = '';
@@ -122,6 +122,8 @@ export function renderCheckoutPage(cartItem) {
 
         inputRadio.addEventListener('change', (event) => {
 
+
+
         console.log('Selected:', {
           optionId: option.id,
           value: event.target.value,
@@ -139,12 +141,13 @@ export function renderCheckoutPage(cartItem) {
           cartItem.deliveryOptionId = option.id;
           const cart = JSON.parse(localStorage.getItem('cart')) || [];
           const itemIndex = cart.findIndex(item => 
-            item.productId === cartItem.productId &&
-            item.deliveryOptionId === cartItem.deliveryOptionId
+            String(item.productId) === String(cartItem.productId) 
+           && String(item.deliveryOptionId) === String(cartItem.deliveryOptionId)
           );
           if (itemIndex > -1) {
             cart[itemIndex].deliveryOptionId = option.id;
             localStorage.setItem('cart', JSON.stringify(cart));
+            renderCheckoutPage(); 
           }
         })
 

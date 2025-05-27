@@ -87,7 +87,7 @@ export async function render(container) {
 
             const checkmarkImg = document.createElement('img');
             checkmarkImg.classList.add('checkmark');
-            checkmarkImg.src = 'Icons/checkmark.png';
+            checkmarkImg.src = './Icons/checkmark.png';
             checkmarkImg.alt = 'checkmark';
 
             const addedText = document.createElement('p');
@@ -95,8 +95,10 @@ export async function render(container) {
             addedText.textContent = 'Added to basket';
 
             // Append the image and text to the checkmark container
-            addedCheckmark.appendChild(checkmarkImg);
+            addedCheckmark.appendChild(checkmarkImg); 
             addedCheckmark.appendChild(addedText);
+            
+
 
             // Then append addedCheckmark to your container (e.g., productBox)
             productBox.appendChild(addedCheckmark);
@@ -106,8 +108,8 @@ export async function render(container) {
               addToCart(product.id);
               updateCartQuantity();
 
-              const productContainer = btn.closest('.product-box');
-              flashCheckmark(productContainer);
+              const productBox = btn.closest('.product-box');
+              flashCheckmark(productBox);
             });
 
 
