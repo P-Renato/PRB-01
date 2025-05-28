@@ -1,8 +1,14 @@
 import { setupQuantityChangeListener, setupDeleteItem } from './cart.js';
 import './date.js';
 import { calculateDeliveryDate, deliveryOptions} from './deliveryOptions.js';
+import { setupLoginModal } from './loginModal.js';
 
+document.addEventListener('DOMContentLoaded', () => {
+    setupLoginModal(); 
+    
+});
 
+console.log('deliveryOptions:', deliveryOptions);
 export function renderCheckoutPage(cartItem) {
   const cart = JSON.parse(localStorage.getItem('cart')) || [];
   const allProducts = JSON.parse(localStorage.getItem('allProducts')) || {};
@@ -83,8 +89,9 @@ export function renderCheckoutPage(cartItem) {
 
        const selectedOptionId = cartItem.deliveryOptionId || '1';
 
-      const deliveryOptions = document.createElement('nav');
-      deliveryOptions.classList.add('delivery-options');
+       console.log(selectedOptionId)
+      const deliveryOptionsNav = document.createElement('nav');
+      deliveryOptionsNav.classList.add('delivery-options');
 
       const chooseDeliveryHeader = document.createElement('h3');
       chooseDeliveryHeader.className = 'chooseDeliveryText';
@@ -94,10 +101,19 @@ export function renderCheckoutPage(cartItem) {
       form.appendChild(chooseDeliveryHeader);
 
       const shippingOptions = [
-        { id: 'freeShip', name: 'delivery-option', value: '1', date: 'Date', text: 'FREE Shipping' },
-        { id: '3dayShip', name: 'delivery-option', value: '2', date: 'Date', text: '$4.99 Shipping' },
-        { id: '1dayShip', name: 'delivery-option', value: '3', date: 'Date', text: '$9.99 Shipping' }
+        { id: 'freeShip', name: 'delivery-option', value: '1', deliveryDays: 7, text: 'FREE Shipping' },
+        { id: '3dayShip', name: 'delivery-option', value: '2', deliveryDays: 3, text: '$4.99 Shipping' },
+        { id: '1dayShip', name: 'delivery-option', value: '3', deliveryDays: 1, text: '$9.99 Shipping' }
       ];
+      
+      const enrichedShippingOptions = shippingOptions.map(option => {
+        const match = deliveryOptions.find(delivery => delivery.id === option.value);
+        return {
+          ...option,
+          priceCents: match ? match.priceCents : null
+        };
+      });
+      console.log(enrichedShippingOptions)
 
       shippingOptions.forEach(option => {
         const optionId = `delivery-option-${option.id}-${cartItem.productId}`;
@@ -157,7 +173,7 @@ export function renderCheckoutPage(cartItem) {
 
         const h5 = document.createElement('h5');
         h5.className = 'dynamicShippingDate';
-        h5.textContent = option.date;
+        h5.textContent = calculateDeliveryDate(option.value);
 
         const p = document.createElement('p');
         p.textContent = option.text;
@@ -173,13 +189,13 @@ export function renderCheckoutPage(cartItem) {
         form.appendChild(label);
       });
 
-      deliveryOptions.appendChild(form);
+      deliveryOptionsNav.appendChild(form);
       checkoutBox.appendChild(headerDeliveryDate);
       checkoutBox.appendChild(title);
       checkoutBox.appendChild(img);
       checkoutBox.appendChild(price);
       checkoutBox.appendChild(quantityButtons);
-      checkoutBox.appendChild(deliveryOptions);
+      checkoutBox.appendChild(deliveryOptionsNav);
       checkoutContainer.appendChild(checkoutBox)   
 
   });

@@ -1,11 +1,13 @@
 import { fetchProducts } from "./fetchProducts.js";
 import './date.js';
 import {updateCartQuantity, addToCart, setupDeleteItem } from './cart.js';
+import { setupLoginModal } from "./loginModal.js"; 
+
 
 document.addEventListener('DOMContentLoaded', ()=>{
   updateCartQuantity(); 
-  setupDeleteItem()
-
+  setupDeleteItem();
+  setupLoginModal();
 })
 
 const params = new URLSearchParams(window.location.search);

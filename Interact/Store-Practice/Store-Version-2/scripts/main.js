@@ -2,6 +2,11 @@ import { render } from './store.js';
 import './date.js'; 
 import { updateCartQuantity } from './cart.js';
 import { fetchProducts } from "./fetchProducts.js";
+import { setupLoginModal } from './loginModal.js';
+
+document.addEventListener('DOMContentLoaded', () => {
+    setupLoginModal(); 
+});
 
 document.addEventListener('DOMContentLoaded', async () => {
   const container = document.querySelector('.products-container');
@@ -68,4 +73,60 @@ function observeSlideImage(image) {
 
   observer.observe(image);
 }
+
+// document.addEventListener('DOMContentLoaded', () => {
+//   const profileIcon = document.querySelector('.profileIcon');
+//   const loginModal = document.querySelector('.login-modal');
+//   const closeModal = document.querySelector('.closeModal')
+
+//   if (profileIcon) {
+//     profileIcon.addEventListener('click', (e) => {
+//       e.preventDefault();
+//       loginModal.classList.replace('login-modal', 'active');
+//     });
+//   }
+
+//   // Optional: Hide modal when clicking outside or pressing ESC
+//   closeModal.addEventListener('click', (e) => {
+//     console.log(loginModal)
+//     if (e.target === closeModal) {
+//        loginModal.style.border = '2px solid black'
+//       loginModal.classList.replace('active', 'login-modal');
+//     }
+//   });
+//   window.addEventListener('cick', (e) => {
+//     if (e.key === 'Escape'&& loginModal.classList.contains('active')) {
+//       loginModal.classList.remove('active');
+//     }
+//   });
+// });
+
+
+
+// document.addEventListener('DOMContentLoaded', () => {
+//   const profileIcon = document.querySelector('.profileIcon');
+//   const loginModal = document.querySelector('.login-modal');
+//   const closeModal = document.querySelector('.closeModal');
+//   const body = document.querySelector('body');
+
+//   if (profileIcon && loginModal) {
+//     profileIcon.addEventListener('click', (e) => {
+//       e.preventDefault();
+//       loginModal.classList.add('active');
+//     });
+//   }
+
+//   if (closeModal && loginModal) {
+//     closeModal.addEventListener('click', () => {
+//       loginModal.classList.remove('active');
+//     });
+//   }
+
+//   // Hide modal when pressing ESC
+//   window.addEventListener('keydown', (e) => {
+//     if (e.key === 'Escape' && loginModal.classList.contains('active')) {
+//       loginModal.classList.remove('active');
+//     }
+//   });
+// });
 

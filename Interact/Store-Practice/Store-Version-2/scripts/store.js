@@ -1,6 +1,11 @@
 import { fetchProducts } from './fetchProducts.js';
 import {updateCartQuantity, addToCart } from './cart.js';
 import { flashCheckmark } from './checkmark.js';
+import { setupLoginModal } from './loginModal.js';
+
+document.addEventListener('DOMContentLoaded', () => {
+    setupLoginModal(); 
+});
 
 
 export async function render(container) {
