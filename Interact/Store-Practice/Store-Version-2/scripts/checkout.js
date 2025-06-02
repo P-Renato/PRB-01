@@ -2,6 +2,7 @@ import { setupQuantityChangeListener, setupDeleteItem } from './cart.js';
 import './date.js';
 import { calculateDeliveryDate, deliveryOptions} from './deliveryOptions.js';
 import { setupLoginModal } from './loginModal.js';
+import {renderOrderSummary} from './orderSummary.js'
 
 document.addEventListener('DOMContentLoaded', () => {
     setupLoginModal(); 
@@ -143,7 +144,8 @@ export function renderCheckoutPage(cartItem) {
         console.log('Selected:', {
           optionId: option.id,
           value: event.target.value,
-          cartItemId: cartItem.productId
+          cartItemId: cartItem.productId,
+          
         });
         
 
@@ -154,17 +156,21 @@ export function renderCheckoutPage(cartItem) {
 
           headerDeliveryDate.textContent = `Delivery Date: ${newDate}`;
           
-          cartItem.deliveryOptionId = option.id;
+          // cartItem.deliveryOptionId = option.id;
+
+          cartItem.deliveryOptionId = event.target.value;
           const cart = JSON.parse(localStorage.getItem('cart')) || [];
           const itemIndex = cart.findIndex(item => 
             String(item.productId) === String(cartItem.productId) 
            && String(item.deliveryOptionId) === String(cartItem.deliveryOptionId)
           );
           if (itemIndex > -1) {
-            cart[itemIndex].deliveryOptionId = option.id;
+            cart[itemIndex].deliveryOptionId = option.id && cartItem.deliveryOptionId;
             localStorage.setItem('cart', JSON.stringify(cart));
             renderCheckoutPage(); 
+            renderOrderSummary();
           }
+          
         })
 
 
@@ -200,4 +206,6 @@ export function renderCheckoutPage(cartItem) {
 
   });
   setupDeleteItem();
+  
 }
+

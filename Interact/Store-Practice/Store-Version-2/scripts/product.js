@@ -49,5 +49,6 @@ container.innerHTML = `
 
 document.querySelector('.js-add-to-cart')?.addEventListener('click', () => {
   console.log('[DEBUG] Add button clicked for:', productId);
-  addToCart(product.id);
+  addToCart(productId);
 });
+

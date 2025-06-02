@@ -1,10 +1,13 @@
 import { renderCheckoutPage } from './checkout.js';
 import { setupAddToCartButtons } from './checkmark.js';
 import './deliveryOptions.js'
+import {renderOrderSummary} from './orderSummary.js'
+
 
 document.addEventListener('DOMContentLoaded', ()=>{
   setupAddToCartButtons();
   renderCheckoutPage();
+  removeFromCart()
 })
 
 export function updateCartQuantity() {
@@ -78,6 +81,7 @@ export  function addToCart(productId) {
         quantityTextElement.textContent = `Quantity: ${newQuantity}`;
         updateCartQuantity();
         renderCheckoutPage();
+        renderOrderSummary();
       }
     });
   }
@@ -142,3 +146,7 @@ export  function addToCart(productId) {
     );
   });
 }
+
+/*
+<button class="js-add-to-cart" data-product-id="123">Add to basket</button>
+*/

@@ -84,6 +84,7 @@ export async function render(container) {
             const btn = document.createElement('button');
             btn.classList.add('add-to-basket-btn');
             btn.textContent = 'Add to basket';
+            btn.dataset.productId = product.id; 
             productBox.appendChild(btn);
 
             const addedCheckmark = document.createElement('div');
@@ -109,8 +110,9 @@ export async function render(container) {
             productBox.appendChild(addedCheckmark);
 
             
-            btn.addEventListener('click', ()=>{
-              addToCart(product.id);
+            btn.addEventListener('click', (e)=>{
+              const productId = btn.dataset.productId
+              addToCart(productId);
               updateCartQuantity();
 
               const productBox = btn.closest('.product-box');

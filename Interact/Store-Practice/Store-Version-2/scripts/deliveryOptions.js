@@ -37,6 +37,7 @@ document.querySelectorAll('input[name="delivery-option"]').forEach(radio => {
     radio.addEventListener('change', (event) => {
         const selectedOptionId = event.target.value;
         updateDeliveryDate(selectedOptionId);
+        localStorage.setItem('cart', JSON.stringify(cart));
     });
 });
 

@@ -19,12 +19,17 @@ header {
     justify-content: space-between;
     align-items: center;
     background: var(--blueBackground);
+    position: fixed;
+    z-index: 999;
 
+    
+}
 
-    .dropdown-menu ul li {
-        display: none;
+.dropdown-menu ul li {
+        /* display: none; */
         list-style: none;
         text-decoration: none;
+        /* transition: ; */
     }
 
 
@@ -33,18 +38,33 @@ header {
         display: flex;
         justify-content: center;
     }
+
+.dropdown-menu,
+.dropdown-menu svg {
+    height: 100%;
+
 }
 
+.dropdown-menu ul {
+    transform: scale(0);
+    transform-origin: left center;
+
+    opacity: 0;
+    
+}
 
 .dropdown-menu:hover {
-
+    
 
     ul {
         background: var(--blueBackground);
-        position: absolute;
-        /* top: 3em; */
-        padding: .8em;
+        top: 3em;
+        left: 0;
         box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        width: 10%;
+        transform: scale(1);
+        transition: transform 400ms ease-in-out;
+        opacity: 1;
     }
         li {
         display: flex;
@@ -62,6 +82,7 @@ header {
 
 header nav:first-of-type {
     padding-left: 1rem;
+    
 }
 
 
@@ -293,16 +314,6 @@ main {
     margin: 0.5em 0;
 }
 
-/* .product-box img {
-    margin-bottom: 0.5em;
-    border-radius: 6px;
-    opacity: 0;
-    transform: scale(0.8);
-    transition: all 0.6s ease;
-
-  }
-   */
-
  
   .product-box span {
     font-size: 0.85em;
@@ -380,7 +391,6 @@ main {
 .date-display {
     position: absolute;
     top: .8rem;
-    left: 6rem;
     color: white;
 }
 
