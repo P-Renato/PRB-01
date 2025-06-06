@@ -31,6 +31,7 @@ export function updateCartQuantity() {
 }
 
 export  function addToCart(productId) {
+  console.trace('addToCart called with:', productId);
     if (!productId) {
         console.warn('Invalid productId passed to addToCart:', productId);
         return; 
@@ -86,6 +87,8 @@ export  function addToCart(productId) {
     });
   }
   
+
+  
   export function setupDeleteItem() {
     const deleteBtn = document.querySelectorAll('.delete-button');
     
@@ -96,14 +99,6 @@ export  function addToCart(productId) {
 
         const productId = button.dataset.productId;
         const deliveryOptionId = button.dataset.deliveryOptionId; // <-- treat as string
-
-        console.log('Pre-deletion cart:', JSON.parse(localStorage.getItem('cart')));
-
-        console.log('Attempting to delete:', {
-          productId,
-          deliveryOptionId,
-          rawDataset: button.dataset
-        });
 
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
@@ -118,7 +113,6 @@ export  function addToCart(productId) {
         const removeFromDOM = document.querySelector(
           `.checkout-box-id${productId}[data-delivery-option-id="${deliveryOptionId}"]`
         )
-        console.log('Remove from DOM is: ', removeFromDOM);
 
         if (removeFromDOM) {
           removeFromDOM.remove();
@@ -129,7 +123,7 @@ export  function addToCart(productId) {
             selector: `.checkout-box-id${productId}[data-delivery-option-id="${deliveryOptionId}"]`
           });     
         }
-        
+        renderOrderSummary();
         updateCartQuantity();
       })
     })

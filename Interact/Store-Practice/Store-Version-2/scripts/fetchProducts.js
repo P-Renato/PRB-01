@@ -24,8 +24,6 @@ export const fetchProducts = async () => {
             };
         });
 
-        console.log(products)
-        console.log(typeof products)
         localStorage.setItem('allProducts', JSON.stringify(products));
         return products
         

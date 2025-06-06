@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 console.log('deliveryOptions:', deliveryOptions);
-export function renderCheckoutPage(cartItem) {
+export function renderCheckoutPage() {
   const cart = JSON.parse(localStorage.getItem('cart')) || [];
   const allProducts = JSON.parse(localStorage.getItem('allProducts')) || {};
   const checkoutContainer = document.querySelector('.checkout-products');
@@ -28,8 +28,6 @@ export function renderCheckoutPage(cartItem) {
   cart.forEach(cartItem => {
       const product = allProducts[cartItem.productId];
       if(!product) return;
-
-
      
       const dateString = calculateDeliveryDate(cartItem.deliveryOptionId || '1');
 
@@ -38,9 +36,6 @@ export function renderCheckoutPage(cartItem) {
       checkoutBox.dataset.productId = cartItem.productId; 
       checkoutBox.dataset.deliveryOptionId = cartItem.deliveryOptionId;
       checkoutBox.classList.add('checkout-box');
-
-
-      
 
       const headerDeliveryDate = document.createElement('h2');
       headerDeliveryDate.className = 'header-delivery-date'
@@ -86,11 +81,8 @@ export function renderCheckoutPage(cartItem) {
       quantityButtons.appendChild(selectQuantity);
       quantityButtons.appendChild(deleteButton);
 
-      
+      const selectedOptionId = cartItem.deliveryOptionId || '1';
 
-       const selectedOptionId = cartItem.deliveryOptionId || '1';
-
-       console.log(selectedOptionId)
       const deliveryOptionsNav = document.createElement('nav');
       deliveryOptionsNav.classList.add('delivery-options');
 
@@ -128,51 +120,40 @@ export function renderCheckoutPage(cartItem) {
         const inputRadio = document.createElement('input');
         inputRadio.type = 'radio';
         inputRadio.name = `delivery-${cartItem.productId}`;
-        inputRadio.value = option.id; // Use the string ID ('freeShip', '3dayShip', etc.)
+        inputRadio.value = option.value; // Use the string ID ('freeShip', '3dayShip', etc.)
         inputRadio.id = optionId;
-        // inputRadio.id = option.value;
+     
         
 
-        inputRadio.checked = (String(option.id) === String(selectedOptionId));
-
-        // inputRadio.checked = (option.id === selectedOptionId); 
+        inputRadio.checked = (String(option.value) === String(selectedOptionId));
 
         inputRadio.addEventListener('change', (event) => {
+          const selectedValue = event.target.value;
 
+          console.log('Selected delivery option:', selectedValue);
 
-
-        console.log('Selected:', {
-          optionId: option.id,
-          value: event.target.value,
-          cartItemId: cartItem.productId,
-          
-        });
-        
-
-          console.log('[DEBUG] Selected option ID:', option.id); 
-          console.log('Selected delivery option:', option.id);
-          console.log('Radio changed!', event.target.value); 
-          const newDate = calculateDeliveryDate(option.value);
-
+          const newDate = calculateDeliveryDate(selectedValue);
           headerDeliveryDate.textContent = `Delivery Date: ${newDate}`;
-          
-          // cartItem.deliveryOptionId = option.id;
 
-          cartItem.deliveryOptionId = event.target.value;
-          const cart = JSON.parse(localStorage.getItem('cart')) || [];
-          const itemIndex = cart.findIndex(item => 
-            String(item.productId) === String(cartItem.productId) 
-           && String(item.deliveryOptionId) === String(cartItem.deliveryOptionId)
+          const currentCart = JSON.parse(localStorage.getItem('cart')) || [];
+          const itemIndex = currentCart.findIndex(item =>
+            String(item.productId) === String(cartItem.productId)
           );
-          if (itemIndex > -1) {
-            cart[itemIndex].deliveryOptionId = option.id && cartItem.deliveryOptionId;
-            localStorage.setItem('cart', JSON.stringify(cart));
-            renderCheckoutPage(); 
-            renderOrderSummary();
-          }
-          
-        })
 
+          if (itemIndex !== -1) {
+            // Update the delivery option for this product
+            currentCart[itemIndex].deliveryOptionId = selectedValue;
+
+            // Save updated cart to localStorage
+            localStorage.setItem('cart', JSON.stringify(currentCart));
+
+            // Re-render everything to reflect changes
+            renderCheckoutPage();
+            renderOrderSummary();
+          } else {
+            console.warn('Could not find matching product in cart to update delivery option');
+          }
+        });
 
         const nav = document.createElement('nav');
         nav.className = 'delivery-date';
@@ -183,9 +164,7 @@ export function renderCheckoutPage(cartItem) {
 
         const p = document.createElement('p');
         p.textContent = option.text;
-
-
-        
+     
         nav.appendChild(h5);
         nav.appendChild(p);
         label.appendChild(inputRadio);
@@ -208,4 +187,6 @@ export function renderCheckoutPage(cartItem) {
   setupDeleteItem();
   
 }
+
+
 

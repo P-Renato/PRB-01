@@ -14,9 +14,6 @@ export async function render(container) {
     return;
   }
   const products = await fetchProducts();
-    console.log(products)
-    console.log(typeof products)
-
 
     const categories = {};
     Object.values(products).forEach(product => {
@@ -25,9 +22,6 @@ export async function render(container) {
     }
     categories[product.category].push(product);
     });
-
-    console.log(categories)
-    console.log(typeof categories)
 
 
     for (const categoryName in categories) {

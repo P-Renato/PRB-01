@@ -1,13 +1,15 @@
 import './date.js';
-import { calculateDeliveryDate, deliveryOptions} from './deliveryOptions.js';
-import {updateCartQuantity, addToCart, setupDeleteItem } from './cart.js';
+import {  getDeliveryOption } from './deliveryOptions.js';
+import {updateCartQuantity, setupDeleteItem } from './cart.js';
+import { renderCheckoutPage} from './checkout.js';
 
 
 document.addEventListener('DOMContentLoaded', ()=>{
     updateCartQuantity(); 
     setupDeleteItem();
-
+    getDeliveryOption();
     renderOrderSummary();
+    renderCheckoutPage();
 })
 
 export function renderOrderSummary() {
@@ -23,12 +25,18 @@ export function renderOrderSummary() {
         const quantity = item.quantity;
         const price = product.price;
         itemsTotal += quantity * price;
-        const shippingOption = deliveryOptions.find(option => option.id === item.deliveryOptionId);
+
+        
+        const shippingOption = getDeliveryOption(item.deliveryOptionId);
         if (shippingOption) {
+            console.log(shippingOption)
             shippingTotal += (shippingOption.priceCents / 100);
         }
-        console.log(shippingOption)
+
     });
+
+
+    console.log('Cart items at render:', cart);
 
     const totalBeforeTax = itemsTotal + shippingTotal;
     const vatPercent = 15;
@@ -36,9 +44,9 @@ export function renderOrderSummary() {
     const grandTotal = totalBeforeTax + vatAmount;
 
     let totalItems = 0;
-cart.forEach(item => {
-    totalItems += item.quantity;
-});
+    cart.forEach(item => {
+        totalItems += item.quantity;
+    });
 
 
     const checkoutCart = document.querySelector('#checkout-cart');
@@ -56,5 +64,7 @@ cart.forEach(item => {
         </div>
         `;
     }
+    
+
 }
 

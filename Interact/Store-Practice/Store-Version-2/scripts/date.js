@@ -1,5 +1,6 @@
 import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
 
+
 const today = dayjs();
 console.log(today)
 
@@ -18,11 +19,4 @@ dateDisplay.textContent = dateFormat
 
 
 
-// JavaScript to update when selection changes
-document.querySelectorAll('input[name="delivery"]').forEach(radio => {
-    radio.addEventListener('change', (event) => {
-        const selectedOptionId = event.target.value;
-        updateDeliveryDate(selectedOptionId);
-    });
-});
 

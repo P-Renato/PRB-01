@@ -1,4 +1,5 @@
 import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
+ 
 
 export const deliveryOptions = [
     { id: '1', deliveryDays: 7, priceCents: 0 },
@@ -8,12 +9,16 @@ export const deliveryOptions = [
 
 
 export function getDeliveryOption(deliveryOptionId) {
+    console.log('Called with:', deliveryOptionId)
     return (deliveryOptions.find(option => option.id === deliveryOptionId) || deliveryOptions[0]);
+     
   }
-  
+  console.log(getDeliveryOption("1"))
+
 export function calculateDeliveryDate(deliveryOptionId) {
     const deliveryOption = getDeliveryOption(deliveryOptionId);
 
+     console.log('Called with:', deliveryOptionId)
     console.log(deliveryOption)
     return dayjs().add(deliveryOption.deliveryDays, 'day').format('dddd, MMMM D');
 
@@ -28,18 +33,10 @@ const dateString = deliveryDate.format('dddd, MMMM D');
 const headerDeliveryDate = document.querySelector('.header-delivery-date');
 // headerDeliveryDate.textContent = `Delivery Date: ${dateString}`;
 
-console.group(deliveryDate)
+console.log(deliveryDate)
 console.log(dateString)
-console.log(headerDeliveryDate)
 
-// JavaScript to update when selection changes
-document.querySelectorAll('input[name="delivery-option"]').forEach(radio => {
-    radio.addEventListener('change', (event) => {
-        const selectedOptionId = event.target.value;
-        updateDeliveryDate(selectedOptionId);
-        localStorage.setItem('cart', JSON.stringify(cart));
-    });
-});
+
 
 
 

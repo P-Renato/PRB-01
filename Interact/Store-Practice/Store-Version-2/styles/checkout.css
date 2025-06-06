@@ -35,8 +35,9 @@
 
 main{
     display: flex;
-    flex-direction: column;
+    /* flex-direction: column; */
     width: 100%;
+    top: 3rem;
 }
 
 h2{
