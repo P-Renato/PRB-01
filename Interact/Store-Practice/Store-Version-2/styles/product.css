@@ -186,9 +186,14 @@ svg {
     justify-content: flex-start;
     margin-left: 0.5rem;
     height: 100%;
+    transition: opacity 0.3s ease;
+    /* opacity: 0; */
 }
 .removeCheckmark{
     display: none;
+}
+.addedCheckmark:not(.removeCheckmark) {
+  opacity: 1;
 }
 
 
@@ -213,7 +218,7 @@ svg {
 .date-display {
     position: absolute;
     top: .8rem;
-    left: 6rem;
+    left: 16rem;
     color: white;
 }
 
@@ -256,3 +261,110 @@ svg {
         grid-row: 1 / 2;
     }
 } */
+
+
+
+.input-group{
+    position: relative;
+    margin: 1.1rem 0;
+}
+
+.modal{
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.formPanel {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.login-modal{
+    display: none;
+}
+
+ .active{
+    display: block;
+}
+
+.form{
+    font-family: var(--productTitle);
+    width: 32rem;
+    height: 22rem;
+    border: 2px solid black;
+    padding: 2rem;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: var(--blueBackground);
+    border-radius: 5rem;
+    color: white;
+}
+
+.input-group label {
+    position: absolute;
+    transform: translateY(-50%);
+    top: 50%;
+    left: 1rem;
+    font-size: 1rem;
+    pointer-events: none;
+    color: rgb(218, 223, 223);
+    padding: 0 .3rem;
+    transition: .5s; 
+}
+
+
+.input-group input{
+    background: transparent;
+    outline: none;
+    border-radius: 5px;
+    border: 1.2px solid rgb(220, 223, 223);
+    color: #fff;
+    font-size: 1rem;
+    padding: 0 .9rem;
+    height: 2rem;
+}
+
+.input-group input:focus~label,
+.input-group input:valid~label {
+    top: 0;
+    background: #010031;
+    font-size: .8rem;
+}
+
+.form span,
+.form span a {
+    color: rgb(218, 223, 223);
+    height: 2rem;
+    text-decoration: none;
+}
+
+.buttons {
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    height: 2rem;
+}
+
+.buttons button {
+    background: transparent;
+    outline: none;
+    border-radius: 5px;
+    border: 1.2px solid rgb(220, 223, 223);
+    color: #fff;
+    font-size: 1rem;
+    padding: 0 .9rem;
+    height: 2rem;
+}

@@ -1,14 +1,19 @@
 import { fetchProducts } from './fetchProducts.js';
 import {updateCartQuantity, addToCart } from './cart.js';
+import { flashCheckmark } from './checkmark.js';
+import { setupLoginModal } from './loginModal.js';
+
+document.addEventListener('DOMContentLoaded', () => {
+    setupLoginModal(); 
+});
 
 
-const container = document.querySelector('.products-container');
-
-export async function render() {
+export async function render(container) {
+  if (!container) {
+    console.warn('No container found!');
+    return;
+  }
   const products = await fetchProducts();
-    console.log(products)
-    console.log(typeof products)
-
 
     const categories = {};
     Object.values(products).forEach(product => {
@@ -17,9 +22,6 @@ export async function render() {
     }
     categories[product.category].push(product);
     });
-
-    console.log(categories)
-    console.log(typeof categories)
 
 
     for (const categoryName in categories) {
@@ -76,12 +78,42 @@ export async function render() {
             const btn = document.createElement('button');
             btn.classList.add('add-to-basket-btn');
             btn.textContent = 'Add to basket';
+            btn.dataset.productId = product.id; 
             productBox.appendChild(btn);
+
+            const addedCheckmark = document.createElement('div');
+          
+            addedCheckmark.classList.add('addedCheckmark', 'removeCheckmark');
+
+            const checkmarkImg = document.createElement('img');
+            checkmarkImg.classList.add('checkmark');
+            checkmarkImg.src = './Icons/checkmark.png';
+            checkmarkImg.alt = 'checkmark';
+
+            const addedText = document.createElement('p');
+            addedText.classList.add('addedText');
+            addedText.textContent = 'Added to basket';
+
+            // Append the image and text to the checkmark container
+            addedCheckmark.appendChild(checkmarkImg); 
+            addedCheckmark.appendChild(addedText);
             
-            btn.addEventListener('click', ()=>{
-              addToCart(product.id);
+
+
+            // Then append addedCheckmark to your container (e.g., productBox)
+            productBox.appendChild(addedCheckmark);
+
+            
+            btn.addEventListener('click', (e)=>{
+              const productId = btn.dataset.productId
+              addToCart(productId);
               updateCartQuantity();
-            })
+
+              const productBox = btn.closest('.product-box');
+              flashCheckmark(productBox);
+            });
+
+
 
             img.addEventListener('click', () => {
                 const productNewWindow = window.location.href = `product.html?id=${product.id}`;
@@ -95,4 +127,5 @@ export async function render() {
     }
 
 }
-render();
+
+
